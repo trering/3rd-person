@@ -64,6 +64,8 @@ public:
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
 private:
+	USphereComponent* batteryPowerCollectorSphere;
+
 	void EngageSuperJump();
 	void DisEngageSuperJump();
 };

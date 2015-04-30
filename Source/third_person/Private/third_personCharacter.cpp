@@ -27,6 +27,12 @@ Athird_personCharacter::Athird_personCharacter(const FObjectInitializer& ObjectI
 	GetCharacterMovement()->JumpZVelocity = 600.f;
 	GetCharacterMovement()->AirControl = 0.2f;
 
+	// dcr9 - added start -------------------------------------------------------
+	batteryPowerCollectorSphere = ObjectInitializer.CreateDefaultSubobject<USphereComponent>(this, TEXT("batteryPowerCollectorSphere"));
+	batteryPowerCollectorSphere->AttachTo(RootComponent);
+	batteryPowerCollectorSphere->SetSphereRadius(200.0);
+	// dcr9 - added end ---------------------------------------------------------
+
 	// Create a camera boom (pulls in towards the player if there is a collision)
 	CameraBoom = ObjectInitializer.CreateDefaultSubobject<USpringArmComponent>(this, TEXT("CameraBoom"));
 	CameraBoom->AttachTo(RootComponent);
