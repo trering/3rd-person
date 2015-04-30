@@ -52,6 +52,9 @@ void Athird_personCharacter::SetupPlayerInputComponent(class UInputComponent* In
 	InputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	InputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
+	InputComponent->BindAction("super-jump", IE_Pressed, this, &Athird_personCharacter::EngageSuperJump);
+	InputComponent->BindAction("super-jump", IE_Released, this, &Athird_personCharacter::DisEngageSuperJump);
+
 	InputComponent->BindAxis("MoveForward", this, &Athird_personCharacter::MoveForward);
 	InputComponent->BindAxis("MoveRight", this, &Athird_personCharacter::MoveRight);
 
@@ -125,4 +128,14 @@ void Athird_personCharacter::MoveRight(float Value)
 		// add movement in that direction
 		AddMovementInput(Direction, Value);
 	}
+}
+
+void Athird_personCharacter::EngageSuperJump()
+{
+	GetCharacterMovement()->JumpZVelocity = 1200.f;
+}
+
+void Athird_personCharacter::DisEngageSuperJump()
+{
+	GetCharacterMovement()->JumpZVelocity = 600.f;
 }
