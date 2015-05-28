@@ -8,6 +8,18 @@ class Athird_personCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+	UPROPERTY(EditAnywhere, Category = Inventory)
+	TArray<class AAProjectItem*> ItemInventory; // Our Inventory
+
+	bool bDrawDebugViewTrace;
+
+	void Tick(float DeltaSeconds) OVERRIDE;
+
+	void PickUpItem(AAProjectItem* Item);
+
+	UFUNCTION(BlueprintPure, meta = (FriendlyName = "Get Inv", CompactNodeTitle = "GetInv", Keywords = "Get Player Inventory"), Category = Inv)
+		TArray<class AAProjectItem*> GetCurrentInventory();
+
 	/** Camera boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class USpringArmComponent* CameraBoom;

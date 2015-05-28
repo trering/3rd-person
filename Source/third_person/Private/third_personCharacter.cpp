@@ -2,6 +2,8 @@
 
 #include "third_person.h"
 #include "third_personCharacter.h"
+#include "AProjectItem.h"
+#include "DrawDebugHelpers.h"	// for DrawDebugLine
 
 //////////////////////////////////////////////////////////////////////////
 // Athird_personCharacter
@@ -125,4 +127,58 @@ void Athird_personCharacter::MoveRight(float Value)
 		// add movement in that direction
 		AddMovementInput(Direction, Value);
 	}
+}
+
+void Athird_personCharacter::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	FVector CamLoc;
+	FRotator CamRot;
+
+	Controller->GetPlayerViewPoint(CamLoc, CamRot); // Get the camera position and rotation
+	const FVector StartTrace = CamLoc; // trace start is the camera location
+	const FVector Direction = CamRot.Vector();
+	const FVector EndTrace = StartTrace + Direction * 200;
+
+	// Perform trace to retrieve hit info
+	FCollisionQueryParams TraceParams(FName(TEXT("WeaponTrace")), true, this);
+	TraceParams.bTraceAsyncScene = true;
+	TraceParams.bReturnPhysicalMaterial = true;
+
+	FHitResult Hit(ForceInit);
+	if (GetWorld()->LineTraceSingle(Hit, StartTrace, EndTrace, ECC_WorldStatic, TraceParams))
+	{
+		AAProjectItem* NewItem = Cast<AAProjectItem>(Hit.GetActor()); // typecast to the item class to the hit actor
+		if (bDrawDebugViewTrace)
+		{
+			DrawDebugLine(GetWorld(),
+						  StartTrace,
+						  EndTrace,
+						  FColor(255, 0, 0),
+						  false,
+						  3,
+						  0,
+						  1);
+		}
+
+		if (NewItem) // if we hit an item with the trace
+		{
+			this->PickUpItem(NewItem); // pick it up
+		}
+	}
+}
+
+void Athird_personCharacter::PickUpItem(AAProjectItem* Item)
+{
+	if (Item)
+	{
+		ItemInventory.Add(Item); // add it to the array
+		Item->PickedUp(); // hide mesh 
+	}
+}
+
+TArray<class AAProjectItem*> Athird_personCharacter::GetCurrentInventory()
+{
+	return ItemInventory;
 }
