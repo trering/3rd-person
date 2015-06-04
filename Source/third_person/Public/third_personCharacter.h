@@ -6,6 +6,7 @@
 UCLASS(config=Game)
 class Athird_personCharacter : public ACharacter
 {
+public:
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, Category = Inventory)
